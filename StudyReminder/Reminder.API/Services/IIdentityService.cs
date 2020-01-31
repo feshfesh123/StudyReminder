@@ -9,6 +9,7 @@ namespace Reminder.API.Services
     public interface IIdentityService
     {
         Task<AuthenticationResult> RegisterAsync(string email, string password);
-        Task<AuthenticationResult> LoginrAsync(string email, string password);
+        Task<AuthenticationResult> LoginAsync(string email, string password);
+
     }
 }

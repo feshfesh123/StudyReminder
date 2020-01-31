@@ -22,9 +22,29 @@ namespace Reminder.API.Services
             _userManager = userManager;
             _jwtSettings = jwtSettings;
         }
-        public Task<AuthenticationResult> LoginrAsync(string email, string password)
+        public async Task<AuthenticationResult> LoginAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            var existingUser = await _userManager.FindByNameAsync(email);
+
+            if (existingUser == null)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "User doesn't exist" }
+                };
+            }
+
+            var userHasValidPassword = await _userManager.CheckPasswordAsync(existingUser, password);
+
+            if (!userHasValidPassword)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "Password is wrong" }
+                };
+            }
+
+            return GenerateAuthResultForUser(existingUser);
         }
 
         public async Task<AuthenticationResult> RegisterAsync(string email, string password)
@@ -51,6 +71,11 @@ namespace Reminder.API.Services
                 };
             }
 
+            return GenerateAuthResultForUser(newUser);
+        }
+
+        public AuthenticationResult GenerateAuthResultForUser(IdentityUser newUser)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor

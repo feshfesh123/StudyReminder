@@ -38,9 +38,9 @@ namespace Reminder.API.Services
             return lesson;
         }
 
-        public async Task<List<Lesson>> GetLessons()
+        public async Task<List<Lesson>> GetLessons(string userId)
         {
-            return await _dataContext.Lessons.ToListAsync();
+            return await _dataContext.Lessons.Where(x => x.UserId == userId).ToListAsync();
         }
 
         public async Task<bool> UpdateLesson(Lesson lessonToUpdate)
@@ -48,11 +48,30 @@ namespace Reminder.API.Services
             var lesson = await GetLessonById(Guid.Parse(lessonToUpdate.Id));
             if (lesson == null) return false;
 
-            _dataContext.Update(lessonToUpdate);
+            lesson.Class = lessonToUpdate.Class;
+            lesson.Code = lessonToUpdate.Code;
+            lesson.Name = lessonToUpdate.Name;
+            lesson.Day = lessonToUpdate.Day;
+            lesson.Time = lessonToUpdate.Time;
+
+            _dataContext.Update(lesson);
 
             var updated = await _dataContext.SaveChangesAsync();
 
             return updated > 0;
+        }
+
+        public async Task<bool> UserOwnsLesson(Guid lessonId, string userId)
+        {
+            var lesson = await _dataContext.Lessons.AsNoTracking().SingleOrDefaultAsync(x => x.Id == lessonId.ToString());
+
+            if (lesson == null)
+                return false;
+
+            if (lesson.UserId != userId)
+                return false;
+
+            return true;
         }
     }
 }

@@ -101,6 +101,14 @@ namespace Reminder.API
                         new List<string>()
                     }
                 });
+
+                services.AddCors(options => {
+                    options.AddPolicy("_myAllowSpecificOrigins", 
+                        builder =>
+                        {
+                            builder.AllowAnyOrigin();
+                        });
+                });
             });
         }
 
@@ -125,6 +133,8 @@ namespace Reminder.API
             {
                 option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
             });
+
+            app.UseCors("_myAllowSpecificOrigins");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

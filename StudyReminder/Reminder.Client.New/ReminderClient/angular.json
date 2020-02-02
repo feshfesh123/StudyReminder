@@ -1,9 +1,9 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
+  "version": 1, 
   "newProjectRoot": "projects",
   "projects": {
-    "StudyReminderClient": {
+    "ReminderClient": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,25 +13,21 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/StudyReminderClient",
+            "outputPath": "dist/ReminderClient",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "src/assets/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/bootstrap/scss/bootstrap.scss"
+              "src/styles.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+
             ]
           },
           "configurations": {
@@ -47,7 +43,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -69,18 +64,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "StudyReminderClient:build"
+            "browserTarget": "ReminderClient:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "StudyReminderClient:build:production"
+              "browserTarget": "ReminderClient:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "StudyReminderClient:build"
+            "browserTarget": "ReminderClient:build"
           }
         },
         "test": {
@@ -95,14 +90,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "src/assets/styles.scss",
-              "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "src/styles.css"
             ],
-            "scripts": [
-              "../node_modules/jquery/dist/jquery.min.js",
-              "../node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ]
+            "scripts": []
           }
         },
         "lint": {
@@ -122,15 +112,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "StudyReminderClient:serve"
+            "devServerTarget": "ReminderClient:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "StudyReminderClient:serve:production"
+              "devServerTarget": "ReminderClient:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "StudyReminderClient"
+  "defaultProject": "ReminderClient"
 }

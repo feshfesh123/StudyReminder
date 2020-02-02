@@ -69,6 +69,16 @@ namespace Reminder.API
                     };
                 });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowMyOrigin",
+                builder => {
+                    builder.WithOrigins("http://localhost:4200");
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                });
+            });
+
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "StudyReminder API", Version = "v1" });
@@ -101,14 +111,6 @@ namespace Reminder.API
                         new List<string>()
                     }
                 });
-
-                services.AddCors(options => {
-                    options.AddPolicy("_myAllowSpecificOrigins", 
-                        builder =>
-                        {
-                            builder.AllowAnyOrigin();
-                        });
-                });
             });
         }
 
@@ -134,7 +136,7 @@ namespace Reminder.API
                 option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
             });
 
-            app.UseCors("_myAllowSpecificOrigins");
+            app.UseCors("AllowMyOrigin");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

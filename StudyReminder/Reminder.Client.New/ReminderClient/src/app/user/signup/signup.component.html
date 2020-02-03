@@ -1,1 +1,31 @@
-<p>signup works!</p>
+<div class="row justify-content-center">
+    <div class="col-md-4 text-center">
+      <form *ngIf="!isSuccess" #f="ngForm" (ngSubmit)="onSubmit()">
+        <img class="mb-4" src="assets/images/angular_solidBlack.svg" alt="" width="125" height="125">
+        <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+        <div class="form-group">
+            <label for="email" class="sr-only">Email address</label>
+            <input type="email" id="email" name="email" #email="ngModel" [(ngModel)]="user.email" class="form-control" placeholder="Email address" email required>
+            <small [hidden]="email.valid || (email.pristine)" class="text-danger">Please enter a valid email</small>
+        </div>
+        <div class="form-group">
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" [(ngModel)]="user.password" class="form-control" placeholder="Password" aria-describedby="passwordHelp" required>     
+          </div>   
+        <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!f.form.valid">Register</button>
+        <ngx-spinner></ngx-spinner>   
+        <small class="form-text text-muted">If you have account.
+            <a routerLink="/login">For Login</a>
+          </small>
+        <div *ngIf="isError" class="alert alert-danger mt-3" role="alert">
+            <strong>Oops!</strong> 
+            <div *ngFor="let error of errors">{{error}}</div>
+        </div>     
+      </form>  
+         
+      <div *ngIf="isSuccess" class="alert alert-success" role="alert">
+          <h4 class="alert-heading">Well done!</h4>
+          <p>Your account was created successfully, <a routerLink="/login">Please login</a> to continue.</p>        
+      </div>  
+    </div> 
+  </div>

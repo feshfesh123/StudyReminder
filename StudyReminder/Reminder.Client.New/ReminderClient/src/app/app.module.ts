@@ -8,11 +8,14 @@ import { LoginComponent } from './user/login/login.component';
 import { SignupComponent } from './user/signup/signup.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule }   from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserService } from './shared/user.service';
 import { AuthGuard } from './auth/auth.guard';
+import { InterceptorService } from './auth/interceptor.service';
+import { LessonService } from './shared/lesson.service';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,9 +30,15 @@ import { AuthGuard } from './auth/auth.guard';
     FormsModule,
     HttpClientModule,
     NgxSpinnerModule,
-    BrowserAnimationsModule
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule,
   ],
-  providers: [UserService, AuthGuard],
+  providers: [UserService, LessonService, AuthGuard,
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: InterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
